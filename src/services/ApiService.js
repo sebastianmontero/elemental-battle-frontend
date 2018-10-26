@@ -1,9 +1,9 @@
 import { Api, JsonRpc, JsSignatureProvider } from 'eosjs';
+import LStorage from './LStorage';
 
 async function takeAction(action, dataValue) {
-    const privateKey = localStorage.getItem('cardgame_key');
     const rpc = new JsonRpc(process.env.REACT_APP_EOS_HTTP_ENDPOINT);
-    const signatureProvider = new JsSignatureProvider([privateKey]);
+    const signatureProvider = new JsSignatureProvider([LStorage.cardgameKey()]);
 
     const api = new Api({
         rpc,
@@ -18,7 +18,7 @@ async function takeAction(action, dataValue) {
                 account: process.env.REACT_APP_EOS_CONTRACT_NAME,
                 name: action,
                 authorization: [{
-                    actor: localStorage.getItem('cardgame_account'),
+                    actor: LStorage.cardgameAccount(),
                     permission: 'active',
                 }],
                 data: dataValue,
@@ -31,21 +31,42 @@ async function takeAction(action, dataValue) {
 
         return resultWithConfig;
     } catch (error) {
-        console.log(`error: ${error}`);
+        console.error(error);
         throw error;
     }
 }
 
 class ApiService {
-    static login({ username, key }) {
-        localStorage.setItem('cardgame_account', username);
-        localStorage.setItem('cardgame_key', key);
+    static async login({ username, key }) {
+        LStorage.setCardgameAccount(username);
+        LStorage.setCardgameKey(key);
         return takeAction('login', { username })
             .catch((err) => {
-                localStorage.removeItem('cardgame_account');
-                localStorage.removeItem('cardgame_key');
+                LStorage.removeCardgameAccount();
+                LStorage.removeCardgameKey();
                 throw err;
             });
+    }
+
+    static async getUserByName(username) {
+        const rpc = JsonRpc(process.env.REACT_APP_EOS_HTTP_ENDPOINT);
+        const result = rpc.get_table_rows({
+            code: process.env.REACT_APP_EOS_CONTRACT_NAME,
+            scope: process.env.REACT_APP_EOS_CONTRACT_NAME,
+            json: true,
+            limit: 1,
+            lower_bound: username,
+            table: 'users',
+        });
+        return result.rows[0];
+    }
+
+    static async getCurrentUser() {
+        const username = LStorage.cardgameAccount();
+        if (!username) {
+            throw new Error('No current user');
+        }
+        return ApiService.login(username, LStorage.cardgameKey());
     }
 }
 
