@@ -1,8 +1,12 @@
-import { createStore, compose } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
 
 const initialState = {};
-const enhancers = [];
+const enhancers = [
+    applyMiddleware(thunkMiddleware, createLogger()),
+];
 
 if (process.env.NODE_ENV === 'development') {
     const { devToolsExtension } = window;

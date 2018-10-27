@@ -10,25 +10,22 @@ class App extends Component {
     state = {};
 
     render() {
-        const { name } = this.props;
+        const { loggedIn } = this.props;
         return (
             <div className="App">
-                {!name && <Login />}
-                {name && <Game />}
+                {!loggedIn && <Login />}
+                {loggedIn && <Game />}
             </div>
         );
     }
 }
-App.defaultProps = {
-    name: null,
-};
 
 App.propTypes = {
-    name: PropTypes.string,
+    loggedIn: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({
-    name: state.user.name,
+const mapStateToProps = ({ login }) => ({
+    loggedIn: login.loggedIn,
 });
 
 export default connect(mapStateToProps)(App);

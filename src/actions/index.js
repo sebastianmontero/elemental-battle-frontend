@@ -1,6 +1,6 @@
-import UserAction from './UserAction';
+import LoginAction from './LoginAction';
 
 
 export {
-    UserAction,
+    LoginAction,
 };

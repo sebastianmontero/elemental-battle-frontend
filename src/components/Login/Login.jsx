@@ -2,19 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '../Button';
-import { ApiService } from '../../services';
-import { UserAction } from '../../actions';
+import { LoginAction } from '../../actions';
 import './Login.css';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            form: {
-                username: 'wrf2cjltf2n3',
-                key: '5KRfc21riCSdtZxUxKyMpvCvatUngKxcppJUk8r4xbWdVywdJLy',
-            },
-            error: '',
+            username: 'wrf2cjltf2n3',
+            key: '5KRfc21riCSdtZxUxKyMpvCvatUngKxcppJUk8r4xbWdVywdJLy',
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -26,27 +22,20 @@ class Login extends Component {
         const { form } = this.state;
 
         this.setState({
-            form: {
-                ...form,
-                [name]: value,
-            },
-            error: '',
+            ...form,
+            [name]: value,
         });
     }
 
     handleSubmit(event) {
         event.preventDefault();
-
-        const { form } = this.state;
-        const { setUser } = this.props;
-
-        ApiService.login(form)
-            .then(() => setUser({ name: form.username }))
-            .catch(err => this.setState({ error: err.toString() }));
+        const { onLogin } = this.props;
+        onLogin(this.state);
     }
 
     render() {
-        const { form, error } = this.state;
+        const { username, key } = this.state;
+        const { loggingIn, error } = this.props;
         return (
             <div className="Login">
                 <div className="title">Elemental Battles - Login</div>
@@ -59,7 +48,7 @@ class Login extends Component {
                                 id="username"
                                 type="text"
                                 name="username"
-                                value={form.username}
+                                value={username}
                                 placeholder="All small letters, a-z, 1-5 or dot, max 12 characters"
                                 onChange={this.handleChange}
                                 pattern="[\.a-z1-5]{2,12}"
@@ -74,12 +63,15 @@ class Login extends Component {
                             <input
                                 type="password"
                                 name="key"
-                                value={form.key}
+                                value={key}
                                 onChange={this.handleChange}
                                 pattern="^.{51,}$"
                                 required
                             />
                         </label>
+                    </div>
+                    <div className="field">
+                        {loggingIn && <span>Logging In...</span>}
                     </div>
                     <div className="field form-error">
                         {error && <span className="error">{error}</span>}
@@ -97,7 +89,14 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-    setUser: PropTypes.func.isRequired,
+    loggingIn: PropTypes.bool.isRequired,
+    error: PropTypes.string.isRequired,
+    onLogin: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setUser: UserAction.setUser })(Login);
+const mapStateToProps = ({ login }) => ({
+    loggingIn: login.loggingIn,
+    error: login.error,
+});
+
+export default connect(mapStateToProps, { onLogin: LoginAction.login })(Login);
