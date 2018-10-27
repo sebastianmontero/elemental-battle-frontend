@@ -19,4 +19,7 @@ export default {
     removeCardgameAccount() {
         localStorage.removeItem(StorageKeys.CARDGAME_ACCOUNT);
     },
+    isAccountStored() {
+        return !!this.cardgameAccount();
+    },
 };

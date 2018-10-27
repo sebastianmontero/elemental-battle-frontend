@@ -5,9 +5,15 @@ import './App.css';
 import './reset.css';
 import Login from '../Login';
 import Game from '../Game';
+import { LoginAction } from '../../actions';
 
 class App extends Component {
     state = {};
+
+    componentDidMount() {
+        const { onMount } = this.props;
+        onMount();
+    }
 
     render() {
         const { loggedIn } = this.props;
@@ -22,10 +28,11 @@ class App extends Component {
 
 App.propTypes = {
     loggedIn: PropTypes.bool.isRequired,
+    onMount: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ login }) => ({
     loggedIn: login.loggedIn,
 });
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, { onMount: LoginAction.autoLogin })(App);

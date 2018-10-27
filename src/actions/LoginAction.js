@@ -1,5 +1,6 @@
 import { ActionTypes } from '../const';
-import { ApiService } from '../services';
+import { ApiService, LStorage } from '../services';
+
 
 class LoginAction {
     static loginRequest() {
@@ -22,13 +23,22 @@ class LoginAction {
     }
 
     static login({ username, key }) {
-        return function loginThunk(dispatch) {
+        return (dispatch) => {
             dispatch(LoginAction.loginRequest());
             ApiService.login({ username, key })
                 .then(
                     () => dispatch(LoginAction.loginSuccess()),
                     error => dispatch(LoginAction.loginFailure(error)),
                 );
+        };
+    }
+
+    static autoLogin() {
+        return (dispatch) => {
+            if (LStorage.isAccountStored()) {
+                return dispatch(LoginAction.login({ username: LStorage.cardgameAccount(), key: LStorage.cardgameKey() }));
+            }
+            return Promise.resolve();
         };
     }
 }

@@ -17,6 +17,7 @@ class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+
     handleChange(event) {
         const { name, value } = event.target;
         const { form } = this.state;
@@ -70,16 +71,26 @@ class Login extends Component {
                             />
                         </label>
                     </div>
-                    <div className="field">
-                        {loggingIn && <span>Logging In...</span>}
-                    </div>
                     <div className="field form-error">
                         {error && <span className="error">{error}</span>}
                     </div>
                     <div className="bottom">
-                        <Button type="submit" className="green">
-                            { 'CONFIRM' }
-                        </Button>
+                        {
+                            loggingIn
+                            && (
+                                <div className="field">
+                                    <span>Logging In...</span>
+                                </div>
+                            )
+                        }
+                        {
+                            !loggingIn
+                            && (
+                                <Button type="submit" className="green">
+                                    CONFIRM
+                                </Button>
+                            )
+                        }
                     </div>
                 </form>
 

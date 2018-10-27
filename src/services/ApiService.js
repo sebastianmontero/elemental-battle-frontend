@@ -60,14 +60,6 @@ class ApiService {
         });
         return result.rows[0];
     }
-
-    static async getCurrentUser() {
-        const username = LStorage.cardgameAccount();
-        if (!username) {
-            throw new Error('No current user');
-        }
-        return ApiService.login(username, LStorage.cardgameKey());
-    }
 }
 
 export default ApiService;
