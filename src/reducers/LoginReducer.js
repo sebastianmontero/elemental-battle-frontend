@@ -1,6 +1,14 @@
 import { ActionTypes } from '../const';
 
-export default (state = { loggedIn: false, loggingIn: false, error: '' }, action) => {
+const initialState = {
+    loggedIn: false,
+    loggingIn: false,
+    error: '',
+    username: '',
+};
+
+
+export default (state = initialState, action) => {
     switch (action.type) {
     case ActionTypes.LOGIN_REQUEST:
 
@@ -8,6 +16,7 @@ export default (state = { loggedIn: false, loggingIn: false, error: '' }, action
             loggedIn: false,
             loggingIn: true,
             error: '',
+            username: action.username,
         };
     case ActionTypes.LOGIN_SUCCESS:
 

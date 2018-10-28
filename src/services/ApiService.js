@@ -49,16 +49,21 @@ class ApiService {
     }
 
     static async getUserByName(username) {
-        const rpc = JsonRpc(process.env.REACT_APP_EOS_HTTP_ENDPOINT);
-        const result = rpc.get_table_rows({
-            code: process.env.REACT_APP_EOS_CONTRACT_NAME,
-            scope: process.env.REACT_APP_EOS_CONTRACT_NAME,
-            json: true,
-            limit: 1,
-            lower_bound: username,
-            table: 'users',
-        });
-        return result.rows[0];
+        try {
+            const rpc = new JsonRpc(process.env.REACT_APP_EOS_HTTP_ENDPOINT);
+            const result = await rpc.get_table_rows({
+                code: process.env.REACT_APP_EOS_CONTRACT_NAME,
+                scope: process.env.REACT_APP_EOS_CONTRACT_NAME,
+                json: true,
+                limit: 1,
+                lower_bound: username,
+                table: 'users',
+            });
+            return result.rows[0];
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 }
 

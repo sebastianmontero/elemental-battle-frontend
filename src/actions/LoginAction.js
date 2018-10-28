@@ -3,9 +3,10 @@ import { ApiService, LStorage } from '../services';
 
 
 class LoginAction {
-    static loginRequest() {
+    static loginRequest(username) {
         return {
             type: ActionTypes.LOGIN_REQUEST,
+            username,
         };
     }
 
@@ -24,7 +25,7 @@ class LoginAction {
 
     static login({ username, key }) {
         return (dispatch) => {
-            dispatch(LoginAction.loginRequest());
+            dispatch(LoginAction.loginRequest(username));
             ApiService.login({ username, key })
                 .then(
                     () => dispatch(LoginAction.loginSuccess()),
@@ -36,7 +37,12 @@ class LoginAction {
     static autoLogin() {
         return (dispatch) => {
             if (LStorage.isAccountStored()) {
-                return dispatch(LoginAction.login({ username: LStorage.cardgameAccount(), key: LStorage.cardgameKey() }));
+                return dispatch(
+                    LoginAction.login({
+                        username: LStorage.cardgameAccount(),
+                        key: LStorage.cardgameKey(),
+                    }),
+                );
             }
             return Promise.resolve();
         };
