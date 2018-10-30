@@ -1,17 +1,38 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { GameMat, GameInfo, PlayerProfile } from './components';
+import { GameStatus } from '../../const';
 import './Game.css';
-import PlayerProfile from './components/PlayerProfile';
 
 class Game extends Component {
-    state = {}; 
+    state = {};
 
     render() {
+        const { gameStarted } = this.props;
         return (
             <section className="Game">
-                <PlayerProfile />
+                {
+                    !gameStarted
+                        ? <PlayerProfile />
+                        : (
+                            <div className="container">
+                                <GameMat />
+                                <GameInfo />
+                            </div>
+                        )
+                }
             </section>
         );
     }
 }
 
-export default Game;
+const mapStateToProps = ({ game }) => ({
+    gameStarted: [
+        GameStatus.NOT_STARTED,
+        GameStatus.STARTING,
+        GameStatus.START_FAILURE,
+    ].indexOf(game.status) === -1,
+});
+
+
+export default connect(mapStateToProps)(Game);

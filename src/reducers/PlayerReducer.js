@@ -8,6 +8,7 @@ const initialState = {
         name: '',
         winCount: 0,
         lossCount: 0,
+        game: null,
     },
 };
 
@@ -21,7 +22,7 @@ export default (state = initialState, action) => {
             isReady: false,
         };
     case ActionTypes.GET_USER_SUCCESS: {
-        const { user } = action;
+        const { user, user: { game_data: game } } = action;
         return {
             isFetching: false,
             error: '',
@@ -30,6 +31,11 @@ export default (state = initialState, action) => {
                 name: user.name,
                 winCount: user.win_count,
                 lossCount: user.loss_count,
+                game: {
+                    ...game,
+                    deckCardCount: game.deck_ai.length,
+                    handCardCount: game.hand_ai.filter(x => x > 0).length,
+                },
             },
         };
     }

@@ -48,6 +48,14 @@ class ApiService {
             });
     }
 
+    static async startGame(username) {
+        return takeAction('startgame', { username });
+    }
+
+    static async playCard(username, cardIdx) {
+        return takeAction('playcard', { username, player_card_idx: cardIdx });
+    }
+
     static async getUserByName(username) {
         try {
             const rpc = new JsonRpc(process.env.REACT_APP_EOS_HTTP_ENDPOINT);
