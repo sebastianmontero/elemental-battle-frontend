@@ -69,6 +69,68 @@ class GameAction {
                 );
         };
     }
+
+    static nextRoundRequest() {
+        return {
+            type: ActionTypes.NEXT_ROUND_REQUEST,
+        };
+    }
+
+    static nextRoundSuccess() {
+        return {
+            type: ActionTypes.NEXT_ROUND_SUCCESS,
+        };
+    }
+
+    static nextRoundFailure(error) {
+        return {
+            type: ActionTypes.NEXT_ROUND_FAILURE,
+            error: error.toString(),
+        };
+    }
+
+    static nextRound(username) {
+        return (dispatch) => {
+            dispatch(GameAction.nextRoundRequest());
+            ApiService.nextRound(username)
+                .then(() => {
+                    dispatch(GameAction.nextRoundSuccess());
+                    dispatch(PlayerAction.getUser(username));
+                },
+                error => dispatch(GameAction.nextRoundFailure(error)));
+        };
+    }
+
+    static endGameRequest() {
+        return {
+            type: ActionTypes.END_GAME_REQUEST,
+        };
+    }
+
+    static endGameSuccess() {
+        return {
+            type: ActionTypes.END_GAME_SUCCESS,
+        };
+    }
+
+    static endGameFailure(error) {
+        return {
+            type: ActionTypes.END_GAME_FAILURE,
+            error: error.toString(),
+        };
+    }
+
+    static endGame(username) {
+        return (dispatch) => {
+            dispatch(GameAction.endGameRequest());
+            ApiService.endGame(username)
+                .then(() => {
+                    dispatch(GameAction.endGameSuccess());
+                    dispatch(PlayerAction.getUser(username));
+                },
+                error => dispatch(GameAction.endGameFailure(error)));
+        };
+    }
 }
 
 export default GameAction;

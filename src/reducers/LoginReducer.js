@@ -21,6 +21,7 @@ export default (state = initialState, action) => {
     case ActionTypes.LOGIN_SUCCESS:
 
         return {
+            ...state,
             loggedIn: true,
             loggingIn: false,
             error: '',
@@ -28,6 +29,7 @@ export default (state = initialState, action) => {
     case ActionTypes.LOGIN_FAILURE:
 
         return {
+            ...state,
             loggedIn: false,
             loggingIn: false,
             error: action.error,

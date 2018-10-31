@@ -36,7 +36,7 @@ const Card = ({ cardId, onClick }) => {
             onClick={onClick}
         >
             <span className="type">{cardType}</span>
-            <span className="power">{cardDict[cardId][1]}</span>
+            <span className="power">{cardId !== 0 && cardDict[cardId][1]}</span>
         </Tag>
     );
 };

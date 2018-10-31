@@ -8,16 +8,21 @@ const Button = ({ ...props }) => {
         style,
         onClick,
         children,
+        loading,
     } = props;
     return (
         <button
             type={type}
-            className={`Button${className ? ` ${className}` : ''}`}
+            className={`Button${className ? ` ${className}` : ''}${loading ? ' loading' : ''}`}
             {...{ style, onClick }}
         >
-            { children }
+            {children}
         </button>
     );
+};
+
+Button.defaultProps = {
+    loading: false,
 };
 
 export default Button;

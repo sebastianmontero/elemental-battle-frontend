@@ -45,11 +45,6 @@ const GameMat = ({
                     <HandCards className="player" cards={playerHandCards} onPlayCard={onPlayCard} />
                 </td>
             </tr>
-            <tr>
-                <td>
-                    {`Game Status: ${gameStatus}`}
-                </td>
-            </tr>
         </tbody>
     </table>
 );
@@ -71,16 +66,21 @@ GameMat.propTypes = {
     onPlayCard: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ player, player: { game: gameData }, game }) => ({
-    deckCardCount: gameData.deckCardCount,
-    aiLife: gameData.life_ai,
-    aiHandCards: gameData.hand_ai,
-    aiName: 'COMPUTER',
-    playerLife: gameData.life_player,
-    playerHandCards: gameData.hand_player,
-    playerName: player.name,
-    gameStatus: game.status,
-});
+const mapStateToProps = ({ player, game }) => {
+    const { data: playerData } = player;
+    const { game: gameData } = playerData;
+
+    return {
+        deckCardCount: gameData.deckCardCount,
+        aiLife: gameData.life_ai,
+        aiHandCards: gameData.hand_ai,
+        aiName: 'COMPUTER',
+        playerLife: gameData.life_player,
+        playerHandCards: gameData.hand_player,
+        playerName: playerData.name,
+        gameStatus: game.status,
+    };
+};
 
 const mapDispatchToProps = dispatch => ({
     onPlayCard: cardIdx => dispatch((_, getState) => {

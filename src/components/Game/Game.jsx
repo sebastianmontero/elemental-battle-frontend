@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { GameMat, GameInfo, PlayerProfile } from './components';
+import PropTypes from 'prop-types';
+import {
+    GameMat,
+    GameInfo,
+    PlayerProfile,
+    Resolution,
+} from './components';
 import { GameStatus } from '../../const';
 import './Game.css';
 
@@ -8,7 +14,7 @@ class Game extends Component {
     state = {};
 
     render() {
-        const { gameStarted } = this.props;
+        const { gameStarted, status } = this.props;
         return (
             <section className="Game">
                 {
@@ -17,6 +23,7 @@ class Game extends Component {
                         : (
                             <div className="container">
                                 <GameMat />
+                                {status === GameStatus.PLAYED_CARD && <Resolution />}
                                 <GameInfo />
                             </div>
                         )
@@ -26,7 +33,13 @@ class Game extends Component {
     }
 }
 
+Game.propTypes = {
+    gameStarted: PropTypes.bool.isRequired,
+    status: PropTypes.string.isRequired,
+};
+
 const mapStateToProps = ({ game }) => ({
+    ...game,
     gameStarted: [
         GameStatus.NOT_STARTED,
         GameStatus.STARTING,

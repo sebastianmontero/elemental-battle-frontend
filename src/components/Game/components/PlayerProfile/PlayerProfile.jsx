@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button } from '..';
+import Button from '../../../Button';
 import { PlayerAction, GameAction } from '../../../../actions';
 import { GameStatus } from '../../../../const';
 import './PlayerProfile.css';

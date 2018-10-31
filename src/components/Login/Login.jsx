@@ -9,8 +9,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: 'mghztrizhfvp',
-            key: '5JK5V4KyZNp8675fXN7DLSqKvqLVCq3njKWz2zTUeVmGt3SR2AH',
+            username: 'xrtpfgt2iwyz',
+            key: '5JNyKaD7K54M7NbFLLZ5ZpXy9h2z1ZW1GA9gTUwk5mu2UhTdkWq',
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -60,7 +60,7 @@ class Login extends Component {
                     </div>
                     <div className="field">
                         <label htmlFor="key">
-              Private key
+                            Private key
                             <input
                                 type="password"
                                 name="key"
