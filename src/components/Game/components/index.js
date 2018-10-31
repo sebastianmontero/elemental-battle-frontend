@@ -5,6 +5,7 @@ import HandCards from './HandCards';
 import PlayerInfo from './PlayerInfo';
 import PlayerProfile from './PlayerProfile';
 import Resolution from './Resolution';
+import WaitCursor from './WaitCursor';
 
 export {
     Card,
@@ -14,4 +15,5 @@ export {
     PlayerInfo,
     PlayerProfile,
     Resolution,
+    WaitCursor,
 };

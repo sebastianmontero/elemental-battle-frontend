@@ -26,14 +26,8 @@ class PlayerProfile extends Component {
         } = this.props;
 
         const errorMsg = error || gameError;
-        let loadingMsg = null;
-        const showBtn = isReady && gameStatus === GameStatus.NOT_STARTED;
-        if (isFetching) {
-            loadingMsg = 'Loading player profile...';
-        } else if (gameStatus === GameStatus.STARTING) {
-            loadingMsg = 'Starting game...';
-        }
-
+        const showBtn = !errorMsg;
+        const isLoading = isFetching || gameStatus === GameStatus.STARTING;
 
         return (
             <div className="PlayerProfile">
@@ -58,9 +52,6 @@ class PlayerProfile extends Component {
                 </div>
                 <div className="buttons">
                     {
-                        loadingMsg && <div>{loadingMsg}</div>
-                    }
-                    {
                         errorMsg
                         && (
                             <div>
@@ -69,7 +60,7 @@ class PlayerProfile extends Component {
                         )
                     }
                     {
-                        showBtn && <Button onClick={onStartGame} className="green">START</Button>
+                        showBtn && <Button onClick={onStartGame} className="green" isLoading={isLoading}>START</Button>
                     }
                 </div>
 

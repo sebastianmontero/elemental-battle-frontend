@@ -8,12 +8,12 @@ const Button = ({ ...props }) => {
         style,
         onClick,
         children,
-        loading,
+        isLoading,
     } = props;
     return (
         <button
             type={type}
-            className={`Button${className ? ` ${className}` : ''}${loading ? ' loading' : ''}`}
+            className={`Button${className ? ` ${className}` : ''}${isLoading ? ' loading' : ''}`}
             {...{ style, onClick }}
         >
             {children}

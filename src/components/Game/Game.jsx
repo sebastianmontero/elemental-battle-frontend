@@ -6,6 +6,7 @@ import {
     GameInfo,
     PlayerProfile,
     Resolution,
+    WaitCursor,
 } from './components';
 import { GameStatus } from '../../const';
 import './Game.css';
@@ -14,7 +15,7 @@ class Game extends Component {
     state = {};
 
     render() {
-        const { gameStarted, status } = this.props;
+        const { gameStarted, status, isLoading } = this.props;
         return (
             <section className="Game">
                 {
@@ -28,6 +29,7 @@ class Game extends Component {
                             </div>
                         )
                 }
+                <WaitCursor show={isLoading} />
             </section>
         );
     }
@@ -36,6 +38,7 @@ class Game extends Component {
 Game.propTypes = {
     gameStarted: PropTypes.bool.isRequired,
     status: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = ({ game }) => ({
@@ -45,6 +48,12 @@ const mapStateToProps = ({ game }) => ({
         GameStatus.STARTING,
         GameStatus.START_FAILURE,
     ].indexOf(game.status) === -1,
+    isLoading: [
+        GameStatus.STARTING,
+        GameStatus.PLAYING_CARD,
+        GameStatus.CHANGING_ROUND,
+        GameStatus.ENDING_GAME,
+    ].indexOf(game.status) !== -1,
 });
 
 

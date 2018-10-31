@@ -97,7 +97,7 @@ class GameAction {
                     dispatch(GameAction.nextRoundSuccess());
                     dispatch(PlayerAction.getUser(username));
                 },
-                error => dispatch(GameAction.nextRoundFailure(error)));
+                    error => dispatch(GameAction.nextRoundFailure(error)));
         };
     }
 
@@ -128,7 +128,7 @@ class GameAction {
                     dispatch(GameAction.endGameSuccess());
                     dispatch(PlayerAction.getUser(username));
                 },
-                error => dispatch(GameAction.endGameFailure(error)));
+                    error => dispatch(GameAction.endGameFailure(error)));
         };
     }
 }
